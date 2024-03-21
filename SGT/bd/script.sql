@@ -1,27 +1,23 @@
-drop database if exists SGT;
-create database SGT CHARSET=UTF8 COLLATE utf8_general_ci;
-use SGT;
+DROP DATABASE IF EXISTS SGT;
+CREATE DATABASE SGT DEFAULT CHARSET=UTF8 COLLATE utf8_general_ci;
+USE SGT;
 
-
-
-create table Usuarios(
-    idUsuarios int not null primary key auto_increment,
-    nome varchar(100) not null,
-    email varchar(50) not null,
-    senha varchar(10) not null
-);
-create table Tarefas(
-    idTarefas int not null primary key auto_increment,
-    descricao varchar(100) not null default("Tarefas"),
-    DataVencimento varchar(30) not null,
-    status varchar(20) not null default,
-    idUsuarios int not null
+CREATE TABLE Usuarios (
+    idUsuarios INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    senha VARCHAR(10) NOT NULL
 );
 
-alter table Tarefas add foreign key (idUsuarios) references Usuarios(idUsuarios);
+CREATE TABLE Tarefas (
+    idTarefas INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    descricao VARCHAR(100) NOT NULL DEFAULT 'Tarefas',
+    DataVencimento DATE NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'Pendente',
+    usuario_id INT,
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(idUsuarios)
+);
 
-
-
-describe Usuarios;
-describe Tarefas;
-show tables;
+DESCRIBE Usuarios;
+DESCRIBE Tarefas;
+SHOW TABLES;
