@@ -26,7 +26,7 @@ routes.post('/login', Login.criarUsuario);
 routes.get('/login', Login.getLogin);
 routes.get('/login/:id', Login.getLogin);
 routes.put('/login', Login.updateLogin);
-routes.delete('/login/:idUsuarios', Login.excluirUsuario);
+routes.delete('/login/:idUsuario', Login.excluirUsuario);
 
 
 module.exports = routes;
