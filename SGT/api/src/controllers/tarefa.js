@@ -1,6 +1,5 @@
 const con = require('../connection/mysql');
 
-addTarefa = (req, res) => {};
 
 getTarefa = (req, res) => {
     con.query('SELECT * FROM Tarefas', (err, result) => {
@@ -8,13 +7,47 @@ getTarefa = (req, res) => {
     })
 };
 
-updateTarefa = (req, res) => {};
+// Função para criar um usuário
+function criarTarefa(descricao, DataVencimento, status) {
+    bcrypt.hash(senha, 10, function(err, hash) {
+        if (err) throw err;
+        
+        const query = 'INSERT INTO Tarefas (descricao, DataVencimento, status) VALUES (?, ?, ?)';
+        con.query(query, [descricao, DataVencimento, status], function(err, _result) {
+            if (err) throw err;
+            console.log('Usuário criado com sucesso.');
+        });
+    });
+  };
+  
+  
+  // // Função para atualizar um usuário
+  function atualizarTarefa(idTarefas, nome, email, senha) {
+    bcrypt.hash(senha, 10, function(err, hash) {
+        if (err) throw err;
+        
+        const query = 'UPDATE Tarefas SET descricao =?, DataVencimento =?, status =? WHERE idTarefas =?';
+        con.query(query, [nome, email, hash, idTarefas], function(err, _result) {
+            if (err) throw err;
+            console.log('Usuário atualizado com sucesso.');
+        });
+    });
+  };
+  
+  // // Função para excluir um usuário
+  function excluirTarefa(idTarefas) {
+    const query = 'DELETE FROM Tarefas WHERE idTarefas =?';
+    con.query(query, [idTarefas], function(err, _result) {
+        if (err) throw err;
+        console.log('Usuário excluído com sucesso.');
+    });
+  };
 
-deleteTarefa = (req, res) => {};
+
 
 module.exports = {
-    addTarefa,
+    criarTarefa,
     getTarefa,
-    updateTarefa,
-    deleteTarefa
+    atualizarTarefa,
+    excluirTarefa
 };

@@ -5,28 +5,20 @@ routes.get('/', (req, res) => {
     res.json("API Gerenciamentos de tarefas")
 });
 
-const Usuario = require('./controllers/usuario');
 const Tarefa = require('./controllers/tarefa');
-const Login = require('./controllers/login');
+const Usuario = require('./controllers/usuario');
 
 
-routes.post('/usuarios', Usuario.addUsuario);
-routes.get('/usuarios', Usuario.getUsuario);
-routes.get('/usuarios/:id', Usuario.getUsuario);
-routes.put('/usuarios', Usuario.updateUsuario);
-routes.delete('/usuarios/:id', Usuario.deleteUsuario);
-
-routes.post('/tarefas', Tarefa.addTarefa);
+routes.post('/tarefas', Tarefa.criarTarefa);
 routes.get('/tarefas', Tarefa.getTarefa);
-routes.get('/tarefas/:id', Tarefa.getTarefa);
-routes.put('/tarefas', Tarefa.updateTarefa);
-routes.delete('/tarefas/:id', Tarefa.deleteTarefa);
+routes.put('/tarefas', Tarefa.atualizarTarefa);
+routes.delete('/tarefas/:id', Tarefa.excluirTarefa);
 
-routes.post('/login', Login.criarUsuario);
-routes.get('/login', Login.getLogin);
-routes.get('/login/:id', Login.getLogin);
-routes.put('/login', Login.updateLogin);
-routes.delete('/login/:idUsuario', Login.excluirUsuario);
+routes.post('/usuario', Usuario.create);
+routes.get('/usuario/:id', Usuario.read);
+routes.put('/usuario', Usuario.update);
+routes.delete('/usuario/:idUsuario', Usuario.del);
 
+routes.post('/login', Usuario.login);
 
 module.exports = routes;
