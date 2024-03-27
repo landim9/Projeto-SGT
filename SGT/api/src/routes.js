@@ -12,11 +12,11 @@ const Usuario = require('./controllers/usuario');
 routes.post('/tarefas', Tarefa.criarTarefa);
 routes.get('/tarefas', Tarefa.getTarefa);
 routes.put('/tarefas', Tarefa.atualizarTarefa);
-routes.delete('/tarefas/:id', Tarefa.excluirTarefa);
+routes.delete('/tarefas/:idTarefas', Tarefa.excluirTarefa);
 
 routes.post('/usuario', Usuario.create);
-routes.get('/usuario/:id', Usuario.read);
-routes.put('/usuario', Usuario.update);
+routes.get('/usuario', Usuario.read);
+routes.put('/usuario/:idUsuario', Usuario.update);
 routes.delete('/usuario/:idUsuario', Usuario.del);
 
 routes.post('/login', Usuario.login);
