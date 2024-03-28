@@ -12,10 +12,16 @@ async function hashPassword(password) {
 
 // Função para visualizar os usuarios
 const read = (req, res) => {
-  con.query("SELECT * FROM Usuarios", (err, result) => {
-    err ? res.json(err).end() : res.json(result).end();
+  con.query("SELECT * FROM usuarios", (err, result) => {
+    if (err) {
+      console.error("Erro ao ler dados:", err);
+      return res.status(500).json({ error: "Erro interno do servidor" });
+    }
+
+    return res.status(200).json({ data: result });
   });
 };
+
 
 // Função para criar um usuário
 const create = (req, res) => {
@@ -77,20 +83,16 @@ const del = (req, res) => {
 };
 
 
-const login = (req, res) => {
-  const { email, senha } = req.body;
+const login = async (req, res) => {
+  try {
+    const { email, senha } = req.body;
 
-  if (!email || !senha) {
-    return res.status(400).json({ error: "Email e senha são obrigatórios" });
-  }
-
-  const query = "SELECT * FROM usuarios WHERE email = ?";
-
-  con.query(query, [email], async (error, results, fields) => {
-    if (error) {
-      console.error("Erro ao executar consulta:", error);
-      return res.status(500).json({ error: "Erro interno do servidor" });
+    if (!email || !senha) {
+      return res.status(400).json({ error: "Email e senha são obrigatórios" });
     }
+
+    const query = "SELECT * FROM usuarios WHERE email = ?";
+    const results = con.query(query, [email]);
 
     if (results.length === 0) {
       return res.status(401).json({ error: "Credenciais inválidas" });
@@ -104,8 +106,12 @@ const login = (req, res) => {
     }
 
     res.status(200).json({ message: "Login bem-sucedido" });
-  });
+  } catch (error) {
+    console.error("Erro ao executar consulta:", error);
+    res.status(500).json({ error: "Erro interno do servidor" });
+  }
 };
+
 
 module.exports = {
   read,

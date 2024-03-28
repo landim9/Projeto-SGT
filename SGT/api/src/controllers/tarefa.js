@@ -7,7 +7,6 @@ getTarefa = (req, res) => {
     })
 };
 
-// Função para criar um usuário
 // Função para criar uma tarefa
 const criarTarefa = (req, res) => {
     const { descricao, DataVencimento, status } = req.body;
@@ -26,13 +25,6 @@ const criarTarefa = (req, res) => {
 // Função para atualizar uma tarefa
 const atualizarTarefa = (req, res) => {
     const { idTarefas, descricao, DataVencimento, status } = req.body;
-
-    bcrypt.hash(senha, 10, (err, hash) => {
-        if (err) {
-            console.error('Erro ao gerar hash de senha:', err);
-            return res.status(500).json({ error: 'Erro interno do servidor' });
-        }
-
         const query = 'UPDATE Tarefas SET descricao = ?, DataVencimento = ?, status = ? WHERE idTarefas = ?';
         con.query(query, [descricao, DataVencimento, status, idTarefas], (err, _result) => {
             if (err) {
@@ -42,7 +34,6 @@ const atualizarTarefa = (req, res) => {
             console.log('Tarefa atualizada com sucesso.');
             return res.status(200).json({ message: 'Tarefa atualizada com sucesso' });
         });
-    });
 };
 
 // Função para excluir uma tarefa
