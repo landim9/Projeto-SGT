@@ -83,34 +83,25 @@ const del = (req, res) => {
 };
 
 
-const login = async (req, res) => {
-  try {
-    const { email, senha } = req.body;
-
-    if (!email || !senha) {
-      return res.status(400).json({ error: "Email e senha são obrigatórios" });
-    }
-
-    const query = "SELECT * FROM usuarios WHERE email = ?";
-    const results = con.query(query, [email]);
-
-    if (results.length === 0) {
-      return res.status(401).json({ error: "Credenciais inválidas" });
-    }
-
-    const usuario = results[0];
-    const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
-
-    if (!senhaCorreta) {
-      return res.status(401).json({ error: "Credenciais inválidas" });
-    }
-
-    res.status(200).json({ message: "Login bem-sucedido" });
-  } catch (error) {
-    console.error("Erro ao executar consulta:", error);
-    res.status(500).json({ error: "Erro interno do servidor" });
+const login = (req, res) => {
+  if (req.body != null && req.body.email != null && req.body.senha != null) {
+      const { email, senha } = req.body;
+      con.query('SELECT * FROM Usuario WHERE email = ? AND senha = ?', [email, senha], (err, result) => {
+          if (err) {
+              res.status(500).json('Erro ao fazer login');
+          } else {
+              if (result.length > 0) {
+                  const { id, nome, email } = result[0];
+                  res.status(200).json({id, nome, email});
+              } else {
+                  res.status(404).json('Usuario ou senha inválidos');
+              }
+          }
+      });
+  } else {
+      res.status(400).json('Favor enviar todos os campos obrigatórios');
   }
-};
+}
 
 
 module.exports = {
